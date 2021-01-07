@@ -20,20 +20,35 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class NetWorthService {
-    private CurrencyConverter converter = new CurrencyConverterBuilder().strategy(Strategy.YAHOO_FINANCE_FILESTORE)
-            .buildConverter();
+
+    private CurrencyConverter converter;
+
+    public NetWorthService() {
+        converter = new CurrencyConverterBuilder().strategy(Strategy.YAHOO_FINANCE_FILESTORE).buildConverter();
+    }
 
     public NetWorth calculateNetWorth(ArrayList<Asset> assets, ArrayList<Liability> liabilities, Currency currency) {
-        return null;
+        float totalAssets = 0f;
+        float totalLiabilities = 0f;
+        for (Asset asset : assets) {
+            totalAssets += asset.getAmount();
+        }
+        for (Liability liability : liabilities) {
+            totalLiabilities += liability.getAmount();
+        }
+        return new NetWorth(totalAssets - totalAssets, currency, assets, liabilities, totalAssets, totalLiabilities);
     }
 
     public NetWorth convertCurrency(NetWorth netWorth, Currency currency)
             throws CurrencyNotSupportedException, JSONException, StorageException, EndpointException, ServiceException {
-        for (Asset asset: netWorth.getAssets()) {
-            asset.setAmount(converter.convertCurrency(new BigDecimal(asset.getAmount()), netWorth.getCurrency(), currency).floatValue());
+        for (Asset asset : netWorth.getAssets()) {
+            asset.setAmount(converter
+                    .convertCurrency(new BigDecimal(asset.getAmount()), netWorth.getCurrency(), currency).floatValue());
         }
-        for (Liability liability: netWorth.getLiabilities()) {
-            liability.setAmount(converter.convertCurrency(new BigDecimal(liability.getAmount()), netWorth.getCurrency(), currency).floatValue());
+        for (Liability liability : netWorth.getLiabilities()) {
+            liability.setAmount(
+                    converter.convertCurrency(new BigDecimal(liability.getAmount()), netWorth.getCurrency(), currency)
+                            .floatValue());
         }
         return calculateNetWorth(netWorth.getAssets(), netWorth.getLiabilities(), currency);
     }
