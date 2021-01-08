@@ -17,6 +17,10 @@ class Main extends React.Component {
 
   netWorth = new NetWorth(15, [new Asset(1, 'Bank', '10.00'), new Asset(2, 'Savings', 15)], 25, [new Liability(1, 'Credit Card',5, 8), new Liability(2, 'Line of Credit',2, 2)], 10);
 
+  componentDidMount() {
+    fetch('http://localhost:8080/currency')
+  }
+
   render() {
     return (
       <div class='app'>
