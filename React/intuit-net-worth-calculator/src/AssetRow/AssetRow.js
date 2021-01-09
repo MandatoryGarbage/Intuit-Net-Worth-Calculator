@@ -4,7 +4,7 @@ import './AssetRow.css'
 class AssetRow extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { value: props.asset.amount }
+        this.state = { value: props.asset.amount.toFixed(2) }
         this.handleChange = this.handleChange.bind(this);
     }
 

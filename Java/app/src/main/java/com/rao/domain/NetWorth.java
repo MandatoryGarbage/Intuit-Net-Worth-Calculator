@@ -2,32 +2,30 @@ package com.rao.domain;
 
 import java.util.ArrayList;
 
-import com.ritaja.xchangerate.util.Currency;
-
 public class NetWorth {
 
     private float netWorth;
-    private Currency currency;
+    private NetWorthCurrency currency;
     private ArrayList<Asset> assets;
     private ArrayList<Liability> liabilities;
     private float totalAssets;
     private float totalLiabilities;
 
-    public NetWorth(float netWorth, Currency currency, ArrayList<Asset> assets, ArrayList<Liability> liabilities,
-            float totalAssets, float totalLiabilities) {
+    public NetWorth(float netWorth, NetWorthCurrency currency, ArrayList<Asset> assets,
+            ArrayList<Liability> liabilities, float totalAssets, float totalLiabilities) {
         this.netWorth = netWorth;
-        this.currency = currency;
+        this.setCurrency(currency);
         this.assets = assets;
         this.liabilities = liabilities;
         this.totalAssets = totalAssets;
         this.totalLiabilities = totalLiabilities;
     }
 
-    public Currency getCurrency() {
+    public NetWorthCurrency getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(NetWorthCurrency currency) {
         this.currency = currency;
     }
 

@@ -1,90 +1,116 @@
 import './Main.css';
 import React from 'react';
-import { Currency } from '../domain/Currency';
 import { NetWorth } from '../domain/NetWorth';
-import { Asset } from '../domain/Asset';
-import { Liability } from '../domain/Liability';
 import AssetRow from '../AssetRow/AssetRow';
 import LiabilityRow from '../LiabilityRow/LiabilityRow';
 
 class Main extends React.Component {
 
-  currencies = [
-    new Currency(1, '$', 'CAD'),
-    new Currency(2, '$', 'USD'),
-    new Currency(3, '', 'GBP')
-  ];
+  constructor() {
+    super();
+    this.state = {
+      netWorth: new NetWorth(0, {}, [], [], 0, 0),
+      currencies: [],
+      selectedCurrency: {}
+    }
 
-  netWorth = new NetWorth(15, [new Asset(1, 'Bank', '10.00'), new Asset(2, 'Savings', 15)], 25, [new Liability(1, 'Credit Card',5, 8), new Liability(2, 'Line of Credit',2, 2)], 10);
+    this.selectCurrency = this.selectCurrency.bind(this);
+  }
 
   componentDidMount() {
-    fetch('http://localhost:8080/currency')
+    Promise.all([
+      fetch('/currency')
+        .then(res => res.json())
+        .then(data => this.setState({ currencies: data })),
+      fetch('/netWorth')
+        .then(res => res.json())
+        .then(data => this.setState({ netWorth: data }))
+    ]).catch(console.log())
+  }
+
+  selectCurrency(event) {
+    this.setState({
+      selectedCurrency: this.state.currencies[event.target.value]
+    });
+    fetch('/netWorth', {
+      method: 'POST', body: JSON.stringify({
+        assets: this.state.netWorth.assets,
+        liabilities: this.state.netWorth.liabilities,
+        netWorthCurrency: this.state.currencies[event.target.value]
+      })
+    })
+      .then(res => res.json())
+      .then(data => this.setState({ netWorth: data }))
   }
 
   render() {
     return (
-      <div class='app'>
+      <div className='app'>
         <div>
           <h1>Tracking your Networth</h1>
         </div>
-        <div class='row'>
-          <div class='fill-remaining-space'></div>
+        <div className='row'>
+          <div className='fill-remaining-space'></div>
           <div>
             <h3>Select Currency: </h3>
           </div>
           <div>
-            <select>
-              {this.currencies.map(currency => <option key={currency.currencyId}>{currency.currencyCode}</option>)}
+            <select onChange={this.selectCurrency}>
+              {this.state.currencies.map((currency, index) => <option key={currency.currencyCode} value={index}>{currency.currencyCode}</option>)}
             </select>
           </div>
         </div>
-        <div class='row'>
+        <div className='row'>
           <h3>Net Worth</h3>
-          <div class='fill-remaining-space'></div>
-          <h3>{this.netWorth.netWorth}</h3>
+          <div className='fill-remaining-space'></div>
+          <h3>{this.state.netWorth.netWorth.toFixed(2)}</h3>
         </div>
-        <div class='row'>
+        <div className='row'>
           <h4>Assets</h4>
-          <div class='fill-remaining-space'></div>
+          <div className='fill-remaining-space'></div>
         </div>
         <div>
           <table>
-            <tr class='header-row'>
-              <th colSpan='2'>Cash and Investments</th><td class='line-item-amount'></td>
+            <tr className='header-row'>
+              <th colSpan='2'>Cash and Investments</th><td className='line-item-amount'></td>
             </tr>
-            {this.netWorth.assets.filter(value => value.category === 1).map(asset => <AssetRow asset={asset}></AssetRow>)}
-            <tr class='header-row'>
-              <th colSpan='2'>Long Term Assets</th><td class='line-item-amount'></td>
+            {this.state.netWorth.assets.filter(value => value.category === 1).map(asset => <AssetRow asset={asset} currency={this.state.selectedCurrency}></AssetRow>)}
+            <tr className='header-row'>
+              <th colSpan='2'>Long Term Assets</th><td className='line-item-amount'></td>
             </tr>
-            {this.netWorth.assets.filter(value => value.category === 2).map(asset => <AssetRow asset={asset}></AssetRow>)}
-            <tr class='header-row'>
+            {this.state.netWorth.assets.filter(value => value.category === 2).map(asset => <AssetRow asset={asset} currency={this.state.selectedCurrency}></AssetRow>)}
+            <tr className='header-row'>
               <th colSpan='2'>Total Assets</th>
-              <td>{this.netWorth.totalAssets}</td>
-              </tr>
+              <td>{this.state.netWorth.totalAssets}</td>
+            </tr>
           </table>
         </div>
-        <div class='row'>
+        <div className='row'>
           <h4>Liabilities</h4>
-          <div class='fill-remaining-space'></div>
+          <div className='fill-remaining-space'></div>
         </div>
         <div>
           <table>
-            <tr class='header-row'>
+            <tr className='header-row'>
               <th>Long Term Assets</th>
               <th>Monthly Payment</th>
-              <td class='line-item-amount'></td>
+              <td className='line-item-amount'></td>
             </tr>
-            {this.netWorth.liablities.filter(value => value.category === 1).map(liability => <LiabilityRow liability={liability}></LiabilityRow>)}
-            <tr class='header-row'>
+            {this.state.netWorth.liablities && this.state.netWorth.liabilities
+              .filter(value => value.category === 1)
+              .map(liability => <LiabilityRow liability={liability} currency={this.state.selectedCurrency}></LiabilityRow>)}
+            <tr className='header-row'>
               <th>Long Term Debt</th>
               <th>Monthly Payment</th>
-              <td class='line-item-amount'></td>
+              <td className='line-item-amount'></td>
             </tr>
-            {this.netWorth.liablities.filter(value => value.category === 2).map(liability => <LiabilityRow liability={liability}></LiabilityRow>)}
-            <tr class='header-row'>
+            {this.state.netWorth.liabilities && this.state.netWorth.liabilities
+              .filter(value => value.category === 2)
+              .map(liability => <LiabilityRow liability={liability} currency={this.state.selectedCurrency}></LiabilityRow>)}
+            <tr className='header-row'>
               <th colSpan='2'>Total Liabilities</th>
-              <td>{this.netWorth.totalLiabilities}</td>
-              </tr>
+              <td>{this.state.netWorth.totalLiabilities.toFixed(2)}</td>
+            </tr>
           </table>
         </div>
       </div>

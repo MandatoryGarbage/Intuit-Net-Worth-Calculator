@@ -19,6 +19,7 @@
 .line-item-amount {
   width: 200px;
   border-left: 1px solid rgba(0, 0, 0, 0.4);
+  text-align: right;
 }
 
 table {
