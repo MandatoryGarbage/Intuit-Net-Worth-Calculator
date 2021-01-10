@@ -15,9 +15,19 @@ class LiabilityRow extends React.Component {
         return (
             <tr>
                 <td>{this.props.liability.lineItem}</td>
-                <td>{this.props.liability.monthlyPayment.toFixed(2)}</td>
+                <td>
+                    <div className='row'>
+                        <div>{this.props.currency.currencySymbol}</div>
+                        <div>{this.props.liability.monthlyPayment.toFixed(2)}</div>
+                        <div class='fill-remaining-space'></div>
+                    </div>
+                </td>
                 <td class='line-item-amount'>
-                    <input value={this.state.value} name={this.props.liability.lineItem} onChange={this.handleChange} pattern='^[0-9]+[.][0-9]{2}$'></input>
+                    <div className='row'>
+                        <div>{this.props.currency.currencySymbol}</div>
+                        <div class='fill-remaining-space'></div>
+                        <input value={this.state.value} name={this.props.liability.lineItem} onChange={this.handleChange} pattern='^[0-9]+[.][0-9]{2}$'></input>
+                    </div>
                 </td>
             </tr>
         );

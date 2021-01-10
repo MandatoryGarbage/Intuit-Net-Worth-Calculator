@@ -21,7 +21,7 @@ class Main extends React.Component {
     Promise.all([
       fetch('/currency')
         .then(res => res.json())
-        .then(data => this.setState({ currencies: data })),
+        .then(data => this.setState({ currencies: data, selectedCurrency: data[0] })),
       fetch('/netWorth')
         .then(res => res.json())
         .then(data => this.setState({ netWorth: data }))
@@ -36,7 +36,7 @@ class Main extends React.Component {
       method: 'POST', body: JSON.stringify({
         assets: this.state.netWorth.assets,
         liabilities: this.state.netWorth.liabilities,
-        netWorthCurrency: this.state.currencies[event.target.value]
+        currencyCode: this.state.selectedCurrency.currencyCode
       })
     })
       .then(res => res.json())
@@ -81,7 +81,13 @@ class Main extends React.Component {
             {this.state.netWorth.assets.filter(value => value.category === 2).map(asset => <AssetRow asset={asset} currency={this.state.selectedCurrency}></AssetRow>)}
             <tr className='header-row'>
               <th colSpan='2'>Total Assets</th>
-              <td>{this.state.netWorth.totalAssets}</td>
+              <td>
+                <div className='row'>
+                  <div>{this.state.selectedCurrency.currencySymbol}</div>
+                  <div className='fill-remaining-space'></div>
+                  <div>{this.state.netWorth.totalAssets}</div>
+                </div>
+              </td>
             </tr>
           </table>
         </div>
