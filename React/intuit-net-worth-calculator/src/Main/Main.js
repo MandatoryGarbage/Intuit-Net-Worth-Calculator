@@ -31,11 +31,13 @@ class Main extends React.Component {
   selectCurrency(event) {
     this.setState({
       selectedCurrency: this.state.currencies[event.target.value]
-    });
-    fetch('/netWorth', {
-      method: 'POST', body: JSON.stringify({
-        assets: this.state.netWorth.assets,
-        liabilities: this.state.netWorth.liabilities,
+    }, this.selectCurrencyFetch);
+  }
+
+  selectCurrencyFetch() {
+    fetch('/convert', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
+        netWorth: this.state.netWorth,
         currencyCode: this.state.selectedCurrency.currencyCode
       })
     })
