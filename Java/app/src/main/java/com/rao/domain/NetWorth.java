@@ -4,15 +4,15 @@ import java.util.ArrayList;
 
 public class NetWorth {
 
-    private float netWorth;
+    private double netWorth;
     private NetWorthCurrency currency;
     private ArrayList<Asset> assets;
     private ArrayList<Liability> liabilities;
-    private float totalAssets;
-    private float totalLiabilities;
+    private double totalAssets;
+    private double totalLiabilities;
 
-    public NetWorth(float netWorth, NetWorthCurrency currency, ArrayList<Asset> assets,
-            ArrayList<Liability> liabilities, float totalAssets, float totalLiabilities) {
+    public NetWorth(double netWorth, NetWorthCurrency currency, ArrayList<Asset> assets,
+            ArrayList<Liability> liabilities, double totalAssets, double totalLiabilities) {
         this.netWorth = netWorth;
         this.setCurrency(currency);
         this.assets = assets;
@@ -29,19 +29,19 @@ public class NetWorth {
         this.currency = currency;
     }
 
-    public float getTotalLiabilities() {
+    public double getTotalLiabilities() {
         return totalLiabilities;
     }
 
-    public void setTotalLiabilities(float totalLiabilities) {
+    public void setTotalLiabilities(double totalLiabilities) {
         this.totalLiabilities = totalLiabilities;
     }
 
-    public float getTotalAssets() {
+    public double getTotalAssets() {
         return totalAssets;
     }
 
-    public void setTotalAssets(float totalAssets) {
+    public void setTotalAssets(double totalAssets) {
         this.totalAssets = totalAssets;
     }
 
@@ -61,11 +61,11 @@ public class NetWorth {
         this.assets = assets;
     }
 
-    public float getNetWorth() {
+    public double getNetWorth() {
         return netWorth;
     }
 
-    public void setNetWorth(float netWorth) {
+    public void setNetWorth(double netWorth) {
         this.netWorth = netWorth;
     }
 

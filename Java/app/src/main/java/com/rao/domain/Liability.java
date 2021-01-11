@@ -3,29 +3,29 @@ package com.rao.domain;
 public class Liability {
     private int category;
     private String lineItem;
-    private float monthlyPayment;
-    private float amount;
+    private double monthlyPayment;
+    private double amount;
 
-    public Liability(int category, String lineItem, float monthlyPayment, float amount) {
+    public Liability(int category, String lineItem, double monthlyPayment, double amount) {
         this.setCategory(category);
         this.setLineItem(lineItem);
         this.setMonthlyPayment(monthlyPayment);
         this.setAmount(amount);
     }
 
-    public float getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(float amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
-    public float getMonthlyPayment() {
+    public double getMonthlyPayment() {
         return monthlyPayment;
     }
 
-    public void setMonthlyPayment(float monthlyPayment) {
+    public void setMonthlyPayment(double monthlyPayment) {
         this.monthlyPayment = monthlyPayment;
     }
 

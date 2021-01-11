@@ -104,7 +104,7 @@ class Main extends React.Component {
               <th>Monthly Payment</th>
               <td className='line-item-amount'></td>
             </tr>
-            {this.state.netWorth.liablities && this.state.netWorth.liabilities
+            {this.state.netWorth.liabilities && this.state.netWorth.liabilities
               .filter(value => value.category === 1)
               .map(liability => <LiabilityRow liability={liability} currency={this.state.selectedCurrency}></LiabilityRow>)}
             <tr className='header-row'>
