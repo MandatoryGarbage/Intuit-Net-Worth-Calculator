@@ -65,7 +65,7 @@ class Main extends React.Component {
         <div className='row'>
           <h3>Net Worth</h3>
           <div className='fill-remaining-space'></div>
-          <h3>{this.state.netWorth.netWorth.toFixed(2)}</h3>
+          <h3>{this.state.selectedCurrency.currencySymbol}{this.state.netWorth.netWorth.toFixed(2)}</h3>
         </div>
         <div className='row'>
           <h4>Assets</h4>
@@ -117,7 +117,11 @@ class Main extends React.Component {
               .map(liability => <LiabilityRow liability={liability} currency={this.state.selectedCurrency}></LiabilityRow>)}
             <tr className='header-row'>
               <th colSpan='2'>Total Liabilities</th>
-              <td>{this.state.netWorth.totalLiabilities.toFixed(2)}</td>
+              <td> <div className='row'>
+                  <div>{this.state.selectedCurrency.currencySymbol}</div>
+                  <div className='fill-remaining-space'></div>
+                  <div>{this.state.netWorth.totalLiabilities.toFixed(2)}</div>
+                </div></td>
             </tr>
           </table>
         </div>
