@@ -18,6 +18,8 @@ class Main extends React.Component {
     }
 
     this.selectCurrency = this.selectCurrency.bind(this);
+    this.handleAssetChange = this.handleAssetChange.bind(this);
+    this.handleLiabilityChange = this.handleLiabilityChange.bind(this);
   }
 
   componentDidMount() {
@@ -48,8 +50,8 @@ class Main extends React.Component {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        assets: this.state.netWorth.assets,
-        liabilities: this.state.netWorth.liablities,
+        assets: this.state.assets,
+        liabilities: this.state.liablities,
         currencyCode: this.state.selectedCurrency.currencyCode
       })
     }).then(res => res.json())
@@ -57,8 +59,6 @@ class Main extends React.Component {
   }
 
   selectCurrencyFetch() {
-    console.log(this.state.selectedCurrency.currencyCode);
-    console.log(this.state.selectedCurrency.currencySymbol);
     // fetch('/convert', {
     //   method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
     //     assets: this.state.netWorth.assets,
@@ -71,9 +71,16 @@ class Main extends React.Component {
     //   .then(data => this.setState({ netWorth: data }))
   }
 
-  handleAssetChange(event, index) {
-    console.log(event.target.value);
-    console.log(index);
+  handleAssetChange(value, index) {
+    let assets = [...this.state.assets];
+    assets[index].amount = value;
+    this.setState({ assets: assets }, () => console.log(this.state))
+  }
+
+  handleLiabilityChange(value, index) {
+    let liabilities = [...this.state.liabilities];
+    liabilities[index].amount = value;
+    this.setState({ liabilities: liabilities }, () => console.log(this.state))
   }
 
   render() {
@@ -108,12 +115,12 @@ class Main extends React.Component {
               <th colSpan='2'>Cash and Investments</th><td className='line-item-amount'></td>
             </tr>
             {this.state.assets.filter(value => value.category === 1).map((asset, index) =>
-              <AssetRow asset={asset} currency={this.state.selectedCurrency} onAssetChange={this.handleAssetChange} index={index}></AssetRow>)}
+              <AssetRow lineItem={asset.lineItem} currencyCode={this.state.selectedCurrency.currencyCode} amount={asset.amount} onAssetChange={this.handleAssetChange} index={index}></AssetRow>)}
             <tr className='header-row'>
               <th colSpan='2'>Long Term Assets</th><td className='line-item-amount'></td>
             </tr>
             {this.state.assets.filter(value => value.category === 2).map((asset, index) =>
-              <AssetRow asset={asset} currency={this.state.selectedCurrency} onAssetChange={this.handleAssetChange} index={index}></AssetRow>)}
+              <AssetRow lineItem={asset.lineItem} currencyCode={this.state.selectedCurrency.currencyCode} amount={asset.amount} onAssetChange={this.handleAssetChange} index={index + 9}></AssetRow>)}
             <tr className='header-row'>
               <th colSpan='2'>Total Assets</th>
               <td>

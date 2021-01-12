@@ -8,18 +8,18 @@ class AssetRow extends React.Component {
     }
 
     handleChange(event) {
-        this.props.onAssetChange(event, this.props.index);
+        this.props.onAssetChange(event.target.value, this.props.index, this.props.category);
     }
 
     render() {
         return (
             <tr>
-                <td colSpan='2'>{this.props.asset.lineItem}</td>
+                <td colSpan='2'>{this.props.lineItem}</td>
                 <td className='line-item-amount'>
                     <div className='row'>
-                    <div>{this.props.currency.currencySymbol}</div>
+                    <div>{this.props.currencySymbol}</div>
                     <div className='fill-remaining-space'></div>
-                    <input value={this.props.asset.amount.toFixed(2)} name={this.props.asset.lineItem} onChange={this.handleChange}></input>
+                    <input value={this.props.amount} name={this.props.lineItem} onChange={this.handleChange}></input>
                     </div>
                 </td>
             </tr>
