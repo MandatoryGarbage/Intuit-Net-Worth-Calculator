@@ -8,7 +8,7 @@ class AssetRow extends React.Component {
     }
 
     handleChange(event) {
-        this.props.onAssetChange(event.target.value, this.props.index, this.props.category);
+        this.props.onAssetChange(event.target.value, this.props.index);
     }
 
     render() {

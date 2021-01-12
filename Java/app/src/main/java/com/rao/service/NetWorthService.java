@@ -1,6 +1,8 @@
 package com.rao.service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import com.rao.domain.Asset;
@@ -70,23 +72,14 @@ public class NetWorthService {
     }
 
     public NetWorth convertCurrency(ArrayList<Asset> assets, ArrayList<Liability> liabilities,
-            String originalCurrencyCode, String convertCurrencyCode)
-            throws CurrencyNotSupportedException, JSONException, StorageException, EndpointException, ServiceException {
+            String originalCurrencyCode, String convertCurrencyCode) throws IOException, JSONException {
+        double exchangeRate = currencyService.getExchangeRate(originalCurrencyCode, convertCurrencyCode);
+        System.out.print(exchangeRate);
         for (Asset asset : assets) {
-            asset.setAmount(
-                    converter
-                            .convertCurrency(new BigDecimal(asset.getAmount()),
-                                    currencyService.getNetWorthCurrency(originalCurrencyCode).getCurrencyCode(),
-                                    currencyService.getNetWorthCurrency(convertCurrencyCode).getCurrencyCode())
-                            .doubleValue());
+            asset.setAmount(new BigDecimal(asset.getAmount() * exchangeRate).setScale(2, RoundingMode.FLOOR).doubleValue());
         }
         for (Liability liability : liabilities) {
-            liability
-                    .setAmount(converter
-                            .convertCurrency(new BigDecimal(liability.getAmount()),
-                                    currencyService.getNetWorthCurrency(originalCurrencyCode).getCurrencyCode(),
-                                    currencyService.getNetWorthCurrency(convertCurrencyCode).getCurrencyCode())
-                            .doubleValue());
+            liability.setAmount(new BigDecimal(liability.getAmount() * exchangeRate).setScale(2, RoundingMode.FLOOR).doubleValue());
         }
         return calculateNetWorth(assets, liabilities, currencyService.getNetWorthCurrency(convertCurrencyCode));
     }

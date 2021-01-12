@@ -3,30 +3,28 @@ import React from 'react';
 class LiabilityRow extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { value: props.liability.amount.toFixed(2) }
         this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange(event) {
-        this.setState({ value: event.target.value });
+        this.props.onLiabilityChange(event.target.value, this.props.index);
     }
 
     render() {
         return (
             <tr>
-                <td>{this.props.liability.lineItem}</td>
+                <td>{this.props.lineItem}</td>
                 <td>
                     <div className='row'>
-                        <div>{this.props.currency.currencySymbol}</div>
-                        <div>{this.props.liability.monthlyPayment.toFixed(2)}</div>
-                        <div class='fill-remaining-space'></div>
+                        <div>{this.props.currencySymbol}</div>
+                        <div>{this.props.monthlyPayment}</div>
                     </div>
                 </td>
-                <td class='line-item-amount'>
+                <td className='line-item-amount'>
                     <div className='row'>
-                        <div>{this.props.currency.currencySymbol}</div>
-                        <div class='fill-remaining-space'></div>
-                        <input value={this.state.value} name={this.props.liability.lineItem} onChange={this.handleChange} pattern='^[0-9]+[.][0-9]{2}$'></input>
+                        <div>{this.props.currencySymbol}</div>
+                        <div className='fill-remaining-space'></div>
+                        <input value={this.props.amount} name={this.props.lineItem} onChange={this.handleChange}></input>
                     </div>
                 </td>
             </tr>

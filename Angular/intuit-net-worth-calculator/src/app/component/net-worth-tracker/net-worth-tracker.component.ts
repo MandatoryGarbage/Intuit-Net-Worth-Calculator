@@ -26,4 +26,10 @@ export class NetWorthTrackerComponent implements OnInit {
       this.netWorthService.netWorth = data;
     });
   }
+
+  updateSelectedCurrency(event) {
+    console.log(event.target.value);
+    this.currencyService.selectedCurrency = this.currencyService.currencies[event.target.value];
+    console.log(this.currencyService.selectedCurrency);
+  }
 }

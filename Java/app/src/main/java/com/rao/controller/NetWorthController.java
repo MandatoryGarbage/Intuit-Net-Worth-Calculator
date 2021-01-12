@@ -1,5 +1,7 @@
 package com.rao.controller;
 
+import java.io.IOException;
+
 import com.rao.domain.ConvertParams;
 import com.rao.domain.NetWorth;
 import com.rao.domain.NetWorthParams;
@@ -34,8 +36,7 @@ public class NetWorthController {
 	}
 
 	@PostMapping("/convert")
-	public NetWorth convertNetWorth(@RequestBody ConvertParams params)
-			throws CurrencyNotSupportedException, JSONException, StorageException, EndpointException, ServiceException {
+	public NetWorth convertNetWorth(@RequestBody ConvertParams params) throws IOException, JSONException {
 		return netWorthService.convertCurrency(params.getAssets(), params.getLiabilities(),
 				params.getOriginalCurrencyCode(), params.getConvertCurrencyCode());
 	}
