@@ -11,7 +11,6 @@ import com.ritaja.xchangerate.service.ServiceException;
 import com.ritaja.xchangerate.storage.StorageException;
 
 import org.json.JSONException;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +24,6 @@ public class NetWorthController {
 
 	@GetMapping("/initialize")
 	public NetWorth initialize() { // Initialize state of the application with example net worth data
-
 		return netWorthService.initialize();
 	}
 

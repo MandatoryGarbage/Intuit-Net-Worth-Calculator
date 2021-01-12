@@ -5,10 +5,9 @@ import { Currency } from 'src/app/domain/currency';
 import { NetWorth } from './../../domain/net-worth';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NetWorthService {
-
   netWorth: NetWorth = new NetWorth();
 
   constructor(private http: HttpClient) {}
@@ -18,13 +17,18 @@ export class NetWorthService {
   }
 
   public updateNetWorth(): Observable<NetWorth> {
-    return this.http.post<NetWorth>('/netWorth', JSON.stringify(this.netWorth));
+    const body = JSON.stringify({
+      assets: this.netWorth.assets,
+      liabilities: this.netWorth.liabiliies,
+      currencyCode: this.netWorth.currency.currencyCode,
+    });
+    return this.http.post<NetWorth>('/netWorth', body);
   }
 
   public convertNetWorth(convertCurrency: Currency): Observable<NetWorth> {
     const body = JSON.stringify({
       netWorth: this.netWorth,
-      convertCurrency: convertCurrency.currencyCode
+      convertCurrency: convertCurrency.currencyCode,
     });
     return this.http.post<NetWorth>('/convert', body);
   }

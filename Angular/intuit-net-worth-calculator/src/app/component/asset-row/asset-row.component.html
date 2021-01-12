@@ -1,0 +1,10 @@
+<tr>
+  <td colspan="2">{{asset.lineItem}}</td>
+  <td class="line-item-amount">
+    <div class="row">
+      <div>{{netWorthService.netWorth.currency.currencySymbol}}</div>
+      <div class="fill-remaining-space"></div>
+      <div><input [(ngModel)]='asset.amount'/></div>
+    </div>
+  </td>
+</tr>

@@ -13,8 +13,36 @@
     </div>
   </div>
   <div class='row'>
-    <div>Net Worth</div>
     <div class='fill-remaining-space'></div>
-    <div></div>
+    <div>Net Worth</div>
+    <div>{{netWorthService.netWorth.currency.currencySymbol}}{{netWorthService.netWorth.netWorth | number: '1.2'}}</div>
+  </div>
+  <div>
+    <div class="row">
+      <div>Assets</div>
+      <div class="fill-remaining-space"></div>
+    </div>
+    <div>
+      <table>
+        <tr class='header-row'>
+          <th colspan="2">Cash and Investments</th>
+          <td class='line-item-amount'></td>
+        </tr>
+        <tr *ngFor="let asset of netWorthService.netWorth.assets">
+          <td colspan="2">{{asset.lineItem}}</td>
+          <td class='line-item-amount'>
+            <div class="row">
+              <div>{{netWorthService.netWorth.currency.currencySymbol}}</div>
+              <div class="fill-remaining-space"></div>
+              <div><input [value]='asset.amount | number: "1.2"' /></div>
+            </div>
+          </td>
+        </tr>
+        <tr class='header-row'>
+          <th colspan="2">Long Term Assets</th>
+          <td class='line-item-amount'></td>
+        </tr>
+      </table>
+    </div>
   </div>
 </div>

@@ -12,7 +12,7 @@ import { NetWorth } from 'src/app/domain/net-worth';
 export class NetWorthTrackerComponent implements OnInit {
   constructor(
     public currencyService: CurrencyService,
-    public netWorthServive: NetWorthService
+    public netWorthService: NetWorthService
   ) {}
 
   ngOnInit() {
@@ -22,8 +22,8 @@ export class NetWorthTrackerComponent implements OnInit {
       );
       this.currencyService.selectedCurrency = this.currencyService.currencies[0];
     });
-    this.netWorthServive.initialize().subscribe((data: NetWorth) => {
-      this.netWorthServive.netWorth = data;
+    this.netWorthService.initialize().subscribe((data: NetWorth) => {
+      this.netWorthService.netWorth = data;
     });
   }
 }
