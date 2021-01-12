@@ -11,6 +11,7 @@ import com.ritaja.xchangerate.service.ServiceException;
 import com.ritaja.xchangerate.storage.StorageException;
 
 import org.json.JSONException;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +23,7 @@ public class NetWorthController {
 	NetWorthService netWorthService = new NetWorthService();
 	CurrencyService currencyService = new CurrencyService();
 
-	@GetMapping("/netWorth")
+	@GetMapping("/initialize")
 	public NetWorth initialize() { // Initialize state of the application with example net worth data
 
 		return netWorthService.initialize();
@@ -37,8 +38,8 @@ public class NetWorthController {
 	@PostMapping("/convert")
 	public NetWorth convertNetWorth(@RequestBody ConvertParams params)
 			throws CurrencyNotSupportedException, JSONException, StorageException, EndpointException, ServiceException {
-		return netWorthService.convertCurrency(params.getNetWorth(),
-				currencyService.getNetWorthCurrency(params.getCurrencyCode()));
+		return netWorthService.convertCurrency(params.getAssets(), params.getLiabilities(),
+				params.getOriginalCurrencyCode(), params.getConvertCurrencyCode());
 	}
 
 }

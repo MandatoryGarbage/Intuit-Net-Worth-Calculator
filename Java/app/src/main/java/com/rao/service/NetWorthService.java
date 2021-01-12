@@ -23,9 +23,11 @@ import org.springframework.stereotype.Component;
 public class NetWorthService {
 
     private CurrencyConverter converter;
+    private CurrencyService currencyService;
 
     public NetWorthService() {
         converter = new CurrencyConverterBuilder().strategy(Strategy.YAHOO_FINANCE_FILESTORE).buildConverter();
+        currencyService = new CurrencyService();
     }
 
     public NetWorth initialize() {
@@ -67,16 +69,25 @@ public class NetWorthService {
                 totalLiabilities);
     }
 
-    public NetWorth convertCurrency(NetWorth netWorth, NetWorthCurrency currency)
+    public NetWorth convertCurrency(ArrayList<Asset> assets, ArrayList<Liability> liabilities,
+            String originalCurrencyCode, String convertCurrencyCode)
             throws CurrencyNotSupportedException, JSONException, StorageException, EndpointException, ServiceException {
-        for (Asset asset : netWorth.getAssets()) {
-            asset.setAmount(converter.convertCurrency(new BigDecimal(asset.getAmount()),
-                    netWorth.getCurrency().getCurrencyCode(), currency.getCurrencyCode()).doubleValue());
+        for (Asset asset : assets) {
+            asset.setAmount(
+                    converter
+                            .convertCurrency(new BigDecimal(asset.getAmount()),
+                                    currencyService.getNetWorthCurrency(originalCurrencyCode).getCurrencyCode(),
+                                    currencyService.getNetWorthCurrency(convertCurrencyCode).getCurrencyCode())
+                            .doubleValue());
         }
-        for (Liability liability : netWorth.getLiabilities()) {
-            liability.setAmount(converter.convertCurrency(new BigDecimal(liability.getAmount()),
-                    netWorth.getCurrency().getCurrencyCode(), currency.getCurrencyCode()).doubleValue());
+        for (Liability liability : liabilities) {
+            liability
+                    .setAmount(converter
+                            .convertCurrency(new BigDecimal(liability.getAmount()),
+                                    currencyService.getNetWorthCurrency(originalCurrencyCode).getCurrencyCode(),
+                                    currencyService.getNetWorthCurrency(convertCurrencyCode).getCurrencyCode())
+                            .doubleValue());
         }
-        return calculateNetWorth(netWorth.getAssets(), netWorth.getLiabilities(), currency);
+        return calculateNetWorth(assets, liabilities, currencyService.getNetWorthCurrency(convertCurrencyCode));
     }
 }

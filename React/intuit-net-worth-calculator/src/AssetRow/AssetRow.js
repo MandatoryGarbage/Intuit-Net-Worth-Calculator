@@ -4,12 +4,11 @@ import './AssetRow.css'
 class AssetRow extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { value: props.asset.amount.toFixed(2) }
         this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange(event) {
-        this.setState({ value: event.target.value });
+        this.props.onAssetChange(event, this.props.index);
     }
 
     render() {
@@ -20,7 +19,7 @@ class AssetRow extends React.Component {
                     <div className='row'>
                     <div>{this.props.currency.currencySymbol}</div>
                     <div className='fill-remaining-space'></div>
-                    <input value={this.state.value} name={this.props.asset.lineItem} onChange={this.handleChange} pattern='^[0-9]+[.][0-9]{2}$'></input>
+                    <input value={this.props.asset.amount.toFixed(2)} name={this.props.asset.lineItem} onChange={this.handleChange}></input>
                     </div>
                 </td>
             </tr>
