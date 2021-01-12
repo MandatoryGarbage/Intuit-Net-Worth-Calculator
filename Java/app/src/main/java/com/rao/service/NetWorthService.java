@@ -11,10 +11,6 @@ import com.rao.domain.NetWorth;
 import com.rao.domain.NetWorthCurrency;
 import com.ritaja.xchangerate.api.CurrencyConverter;
 import com.ritaja.xchangerate.api.CurrencyConverterBuilder;
-import com.ritaja.xchangerate.api.CurrencyNotSupportedException;
-import com.ritaja.xchangerate.endpoint.EndpointException;
-import com.ritaja.xchangerate.service.ServiceException;
-import com.ritaja.xchangerate.storage.StorageException;
 import com.ritaja.xchangerate.util.Currency;
 import com.ritaja.xchangerate.util.Strategy;
 
@@ -61,13 +57,17 @@ public class NetWorthService {
             NetWorthCurrency currency) {
         double totalAssets = 0.00;
         double totalLiabilities = 0.00;
+        double netWorth = 0.00;
         for (Asset asset : assets) {
             totalAssets += asset.getAmount();
         }
+        totalAssets = new BigDecimal(totalAssets).setScale(2, RoundingMode.FLOOR).doubleValue();
         for (Liability liability : liabilities) {
             totalLiabilities += liability.getAmount();
         }
-        return new NetWorth(totalAssets - totalLiabilities, currency, assets, liabilities, totalAssets,
+        totalLiabilities = new BigDecimal(totalLiabilities).setScale(2, RoundingMode.FLOOR).doubleValue();
+        netWorth = new BigDecimal(totalAssets - totalLiabilities).setScale(2, RoundingMode.FLOOR).doubleValue();
+        return new NetWorth(netWorth, currency, assets, liabilities, totalAssets,
                 totalLiabilities);
     }
 

@@ -129,7 +129,7 @@ class Main extends React.Component {
         <div className='row'>
           <h3>Net Worth</h3>
           <div className='fill-remaining-space'></div>
-          <h3>{this.state.selectedCurrency.currencySymbol}{this.state.netWorth}</h3>
+          <h3>{this.state.currencySymbol}{this.state.netWorth}</h3>
         </div>
         <div className='row'>
           <h4>Assets</h4>
@@ -151,7 +151,7 @@ class Main extends React.Component {
               <th colSpan='2'>Total Assets</th>
               <td>
                 <div className='row'>
-                  <div>{this.state.selectedCurrency.currencySymbol}</div>
+                  <div>{this.state.currencySymbol}</div>
                   <div className='fill-remaining-space'></div>
                   <div>{this.state.totalAssets}</div>
                 </div>
@@ -182,7 +182,7 @@ class Main extends React.Component {
             <tr className='header-row'>
               <th colSpan='2'>Total Liabilities</th>
               <td> <div className='row'>
-                <div>{this.state.selectedCurrency.currencySymbol}</div>
+                <div>{this.state.currencySymbol}</div>
                 <div className='fill-remaining-space'></div>
                 <div>{this.state.totalLiabilities}</div>
               </div>
