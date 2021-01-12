@@ -1,31 +1,31 @@
 package com.rao.domain;
 
-public class Liability {
+public class DisplayLiability {
     private int category;
     private String lineItem;
-    private double monthlyPayment;
-    private double amount;
+    private String monthlyPayment;
+    private String amount;
 
-    public Liability(int category, String lineItem, double monthlyPayment, double amount) {
-        this.setCategory(category);
-        this.setLineItem(lineItem);
+    public DisplayLiability(int category, String lineItem, String monthlyPayment, String amount) {
+        this.category = category;
+        this.lineItem = lineItem;
         this.setMonthlyPayment(monthlyPayment);
         this.setAmount(amount);
     }
 
-    public double getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 
-    public double getMonthlyPayment() {
+    public String getMonthlyPayment() {
         return monthlyPayment;
     }
 
-    public void setMonthlyPayment(double monthlyPayment) {
+    public void setMonthlyPayment(String monthlyPayment) {
         this.monthlyPayment = monthlyPayment;
     }
 
@@ -44,4 +44,5 @@ public class Liability {
     public void setCategory(int category) {
         this.category = category;
     }
+
 }

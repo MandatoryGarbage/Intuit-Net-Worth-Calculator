@@ -3,16 +3,16 @@ package com.rao.service;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import com.rao.domain.Asset;
+import com.rao.domain.DisplayAsset;
+import com.rao.domain.DisplayLiability;
 import com.rao.domain.Liability;
-import com.rao.domain.NetWorth;
+import com.rao.domain.DisplayNetWorth;
 import com.rao.domain.NetWorthCurrency;
-import com.ritaja.xchangerate.api.CurrencyConverter;
-import com.ritaja.xchangerate.api.CurrencyConverterBuilder;
 import com.ritaja.xchangerate.util.Currency;
-import com.ritaja.xchangerate.util.Strategy;
 
 import org.json.JSONException;
 import org.springframework.stereotype.Component;
@@ -20,15 +20,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class NetWorthService {
 
-    private CurrencyConverter converter;
     private CurrencyService currencyService;
+    private DecimalFormat decimalFormat;
 
     public NetWorthService() {
-        converter = new CurrencyConverterBuilder().strategy(Strategy.YAHOO_FINANCE_FILESTORE).buildConverter();
         currencyService = new CurrencyService();
+        decimalFormat = new DecimalFormat("0.00");
     }
 
-    public NetWorth initialize() {
+    public DisplayNetWorth initialize() {
         ArrayList<Asset> assets = new ArrayList<>();
         assets.add(new Asset(1, "Chequing", 2000.00));
         assets.add(new Asset(1, "Savings for Taxes", 4000.00));
@@ -53,33 +53,41 @@ public class NetWorthService {
         return calculateNetWorth(assets, liabilities, netWorthCurrency);
     }
 
-    public NetWorth calculateNetWorth(ArrayList<Asset> assets, ArrayList<Liability> liabilities,
+    public DisplayNetWorth calculateNetWorth(ArrayList<Asset> assets, ArrayList<Liability> liabilities,
             NetWorthCurrency currency) {
         double totalAssets = 0.00;
         double totalLiabilities = 0.00;
         double netWorth = 0.00;
+        ArrayList<DisplayAsset> displayAssets = new ArrayList<>();
         for (Asset asset : assets) {
+            DisplayAsset displayAsset = new DisplayAsset(asset.getCategory(), asset.getLineItem(), decimalFormat.format(asset.getAmount()));
+            displayAssets.add(displayAsset);
             totalAssets += asset.getAmount();
         }
         totalAssets = new BigDecimal(totalAssets).setScale(2, RoundingMode.FLOOR).doubleValue();
+        ArrayList<DisplayLiability> displayLiabilities = new ArrayList<>();
         for (Liability liability : liabilities) {
+            DisplayLiability displayLiability = new DisplayLiability(liability.getCategory(), liability.getLineItem(), decimalFormat.format(liability.getMonthlyPayment()), decimalFormat.format(liability.getAmount()));
+            displayLiabilities.add(displayLiability);
             totalLiabilities += liability.getAmount();
         }
         totalLiabilities = new BigDecimal(totalLiabilities).setScale(2, RoundingMode.FLOOR).doubleValue();
         netWorth = new BigDecimal(totalAssets - totalLiabilities).setScale(2, RoundingMode.FLOOR).doubleValue();
-        return new NetWorth(netWorth, currency, assets, liabilities, totalAssets,
-                totalLiabilities);
+        return new DisplayNetWorth(decimalFormat.format(netWorth), currency, displayAssets, displayLiabilities, decimalFormat.format(totalAssets),
+                decimalFormat.format(totalLiabilities));
     }
 
-    public NetWorth convertCurrency(ArrayList<Asset> assets, ArrayList<Liability> liabilities,
+    public DisplayNetWorth convertCurrency(ArrayList<Asset> assets, ArrayList<Liability> liabilities,
             String originalCurrencyCode, String convertCurrencyCode) throws IOException, JSONException {
         double exchangeRate = currencyService.getExchangeRate(originalCurrencyCode, convertCurrencyCode);
         System.out.print(exchangeRate);
         for (Asset asset : assets) {
-            asset.setAmount(new BigDecimal(asset.getAmount() * exchangeRate).setScale(2, RoundingMode.FLOOR).doubleValue());
+            asset.setAmount(
+                    new BigDecimal(asset.getAmount() * exchangeRate).setScale(2, RoundingMode.FLOOR).doubleValue());
         }
         for (Liability liability : liabilities) {
-            liability.setAmount(new BigDecimal(liability.getAmount() * exchangeRate).setScale(2, RoundingMode.FLOOR).doubleValue());
+            liability.setAmount(
+                    new BigDecimal(liability.getAmount() * exchangeRate).setScale(2, RoundingMode.FLOOR).doubleValue());
         }
         return calculateNetWorth(assets, liabilities, currencyService.getNetWorthCurrency(convertCurrencyCode));
     }
