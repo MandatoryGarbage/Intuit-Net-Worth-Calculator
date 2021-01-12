@@ -1,0 +1,39 @@
+.app {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 800px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
+.line-item-amount {
+  width: 200px;
+  border-left: 1px solid rgba(0, 0, 0, 0.4);
+  text-align: right;
+}
+
+table {
+  width: 100%;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+.header-row {
+  padding-top: 10px !important;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+}
+
+th {
+  text-align: left;
+}

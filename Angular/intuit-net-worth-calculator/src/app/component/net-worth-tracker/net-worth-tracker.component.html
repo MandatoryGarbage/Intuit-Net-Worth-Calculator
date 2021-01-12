@@ -1,0 +1,20 @@
+<div class='app'>
+  <div>
+    <h1>Tracking your Networth</h1>
+  </div>
+  <div class='row'>
+    <div class='fill-remaining-space'></div>
+    <div>Select Currency:</div>
+    <div>
+      <select [value]='currencyService.selectedCurrency'>
+        <option *ngFor='let currency of currencyService.currencies' [value]='currency'>{{currency.currencyCode}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class='row'>
+    <div>Net Worth</div>
+    <div class='fill-remaining-space'></div>
+    <div></div>
+  </div>
+</div>
