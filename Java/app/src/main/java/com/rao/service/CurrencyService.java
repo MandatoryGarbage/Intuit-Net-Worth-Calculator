@@ -3,6 +3,8 @@ package com.rao.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.rao.domain.NetWorthCurrency;
 import com.ritaja.xchangerate.util.Currency;
@@ -19,7 +21,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CurrencyService {
 
-    private HashMap<String, NetWorthCurrency> currencyMap;
+    public HashMap<String, NetWorthCurrency> currencyMap;
 
     public CurrencyService() {
         currencyMap = new HashMap<>();

@@ -1,6 +1,6 @@
 package com.rao.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.rao.domain.NetWorthCurrency;
 import com.rao.service.CurrencyService;
@@ -14,7 +14,7 @@ public class CurrencyController {
 	CurrencyService currencyService = new CurrencyService();
 
 	@GetMapping("/currency")
-	public ArrayList<NetWorthCurrency> initialize() {
+	public List<NetWorthCurrency> listCurrencies() {
 		return currencyService.listCurrencies();
 	}
 
