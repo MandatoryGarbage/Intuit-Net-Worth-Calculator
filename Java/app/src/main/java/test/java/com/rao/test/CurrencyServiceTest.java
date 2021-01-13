@@ -1,4 +1,4 @@
-package test.java;
+package test.java.com.rao.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

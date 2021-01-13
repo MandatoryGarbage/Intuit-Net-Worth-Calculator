@@ -1,4 +1,4 @@
-package test.java;
+package test.java.com.rao.test;
 
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;

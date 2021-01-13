@@ -14,7 +14,8 @@ class Main extends React.Component {
       totalAssets: 0,
       totalLiabilities: 0,
       currencies: [],
-      selectedCurrency: {}
+      currencyCode: "",
+      currencySymbol: ""
     }
 
     this.selectCurrency = this.selectCurrency.bind(this);
@@ -82,19 +83,6 @@ class Main extends React.Component {
         currencyCode: data.currency.currencyCode,
         currencySymbol: data.currency.currencySymbol
       }))
-  }
-
-  selectCurrencyFetch(convertCurrencyCode) {
-    fetch('/convert', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
-        assets: this.state.assets,
-        liabilities: this.state.liablities,
-        originalCurrencyCode: this.state.currencyCode,
-        convertCurrencyCode: convertCurrencyCode
-      })
-    })
-      .then(res => res.json())
-      .then(data => this.setState({ netWorth: data }))
   }
 
   handleAssetChange(value, index) {

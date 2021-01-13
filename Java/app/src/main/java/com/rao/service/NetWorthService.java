@@ -80,7 +80,6 @@ public class NetWorthService {
     public DisplayNetWorth convertCurrency(ArrayList<Asset> assets, ArrayList<Liability> liabilities,
             String originalCurrencyCode, String convertCurrencyCode) throws IOException, JSONException {
         double exchangeRate = currencyService.getExchangeRate(originalCurrencyCode, convertCurrencyCode);
-        System.out.print(exchangeRate);
         for (Asset asset : assets) {
             asset.setAmount(
                     new BigDecimal(asset.getAmount() * exchangeRate).setScale(2, RoundingMode.FLOOR).doubleValue());
