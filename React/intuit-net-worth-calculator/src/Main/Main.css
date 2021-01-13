@@ -22,6 +22,10 @@
   text-align: right;
 }
 
+.currency-symbol {
+  padding-right: 10px;
+}
+
 table {
   width: 100%;
   border: 1px solid black;
@@ -29,11 +33,24 @@ table {
 }
 
 .header-row {
-  padding-top: 10px !important;
+  padding: 10px !important;
   border-bottom: 1px solid black;
   border-top: 1px solid black;
 }
 
+tr {
+  height: 32px;
+}
+
+td, th {
+  padding: 0 10px;
+}
+
 th {
   text-align: left;
+}
+
+input {
+  border: none;
+  border-bottom: 1px solid black;
 }

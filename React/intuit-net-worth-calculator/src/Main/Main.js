@@ -139,7 +139,7 @@ class Main extends React.Component {
               <th colSpan='2'>Total Assets</th>
               <td>
                 <div className='row'>
-                  <div>{this.state.currencySymbol}</div>
+                  <div className='currency-symbol'>{this.state.currencySymbol}</div>
                   <div className='fill-remaining-space'></div>
                   <div>{this.state.totalAssets}</div>
                 </div>

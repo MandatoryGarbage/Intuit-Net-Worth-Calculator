@@ -3,8 +3,6 @@ package com.rao.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import com.rao.domain.NetWorthCurrency;
 import com.ritaja.xchangerate.util.Currency;
@@ -58,8 +56,7 @@ public class CurrencyService {
             String responseBody = httpclient.execute(httpGet, responseHandler);
             JSONObject result = new JSONObject(responseBody);
             JSONObject conversionRates = result.getJSONObject("conversion_rates");
-            double conversionRate = Double.parseDouble(conversionRates.getString(convertCurrencyCode));
-            return conversionRate;
+            return Double.parseDouble(conversionRates.getString(convertCurrencyCode));
         }
     }
 }

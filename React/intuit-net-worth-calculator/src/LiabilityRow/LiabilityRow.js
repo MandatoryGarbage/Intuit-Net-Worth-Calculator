@@ -1,4 +1,5 @@
 import React from 'react';
+import './LiabilityRow.css'
 
 class LiabilityRow extends React.Component {
     constructor(props) {
@@ -16,7 +17,7 @@ class LiabilityRow extends React.Component {
                 <td>{this.props.lineItem}</td>
                 <td>
                     <div className='row'>
-                        <div>{this.props.currencySymbol}</div>
+                        <div class='currency-symbol'>{this.props.currencySymbol}</div>
                         <div>{this.props.monthlyPayment}</div>
                     </div>
                 </td>

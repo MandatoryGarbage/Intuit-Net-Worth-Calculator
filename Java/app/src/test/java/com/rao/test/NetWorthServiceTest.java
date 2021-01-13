@@ -1,9 +1,9 @@
-package test.java.com.rao.test;
+package com.rao.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -17,9 +17,12 @@ import com.rao.service.CurrencyService;
 import com.rao.service.NetWorthService;
 import com.ritaja.xchangerate.util.Currency;
 
+import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 public class NetWorthServiceTest {
 
     NetWorthService netWorthService;
@@ -45,7 +48,7 @@ public class NetWorthServiceTest {
     public void testNetWorthCalculations() {
         NetWorthCurrency currency = new NetWorthCurrency(Currency.CAD, "$");
         ArrayList<Asset> assets = new ArrayList<>();
-        ArrayList<Liability> liabilities = new ArrayList>();
+        ArrayList<Liability> liabilities = new ArrayList<>();
         assets.add(new Asset(1, "test asset", 900.00));
         liabilities.add(new Liability(1, "test liability", 50.00, 400.00));
         DisplayNetWorth testNetWorth = netWorthService.calculateNetWorth(assets, liabilities, currency);
@@ -62,12 +65,12 @@ public class NetWorthServiceTest {
     }
 
     @Test
-    public void testCurrencyConversion() {
+    public void testCurrencyConversion() throws IOException, JSONException {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         String originalCurrencyCode = "CAD";
         String convertCurrencyCode = "USD";
         ArrayList<Asset> assets = new ArrayList<>();
-        ArrayList<Liability> liabilities = new ArrayList>();
+        ArrayList<Liability> liabilities = new ArrayList<>();
         assets.add(new Asset(1, "test asset", 900.00));
         liabilities.add(new Liability(1, "test liability", 50.00, 400.00));
         
@@ -80,7 +83,5 @@ public class NetWorthServiceTest {
         assertEquals(convertedNetWorth.getTotalAssets(), convertedTotalAssets);
         assertEquals(convertedNetWorth.getTotalLiabilities(), convertedTotalLiabilities);
         assertEquals(convertedNetWorth.getNetWorth(), convertedNetWorthTotal);
-
-        
     }
 }
