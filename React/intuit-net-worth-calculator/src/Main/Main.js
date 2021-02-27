@@ -2,6 +2,7 @@ import './Main.css';
 import React from 'react';
 import AssetRow from '../AssetRow/AssetRow';
 import LiabilityRow from '../LiabilityRow/LiabilityRow';
+import CurrencySelector from '../CurrencySelector/CurrencySelector'
 
 class Main extends React.Component {
 
@@ -32,7 +33,7 @@ class Main extends React.Component {
         .then(res => res.json())
         .then(data => this.setState({
           netWorth: data.netWorth,
-          assets: data.assets,
+          assets: data.assets.sort((a, b) => a.category - b.category),
           liabilities: data.liabilities,
           totalAssets: data.totalAssets,
           totalLiabilities: data.totalLiabilities,
@@ -41,6 +42,14 @@ class Main extends React.Component {
         }))
     ]).catch(console.log())
   }
+
+  handleCurrencyCoversionFailure(response) {
+    if (!response.ok) {
+      throw Error('The currency conversion service has failed');
+    }
+    return response;
+  }
+
 
   selectCurrency(event) {
     fetch('/convert', {
@@ -52,16 +61,19 @@ class Main extends React.Component {
         originalCurrencyCode: this.state.currencyCode,
         convertCurrencyCode: event.target.value
       })
-    }).then(res => res.json())
+    })
+      .then(this.handleCurrencyCoversionFailure)
+      .then(res => res.json())
       .then(data => this.setState({
         netWorth: data.netWorth,
-        assets: data.assets,
+        assets: data.assets.sort((a, b) => a.category - b.category),
         liabilities: data.liabilities,
         totalAssets: data.totalAssets,
         totalLiabilities: data.totalLiabilities,
         currencyCode: data.currency.currencyCode,
         currencySymbol: data.currency.currencySymbol
       }))
+      .catch(error => window.alert(error))
   }
 
   updateNetWorth() {
@@ -76,7 +88,7 @@ class Main extends React.Component {
     }).then(res => res.json())
       .then(data => this.setState({
         netWorth: data.netWorth,
-        assets: data.assets,
+        assets: data.assets.sort((a, b) => a.category - b.category),
         liabilities: data.liabilities,
         totalAssets: data.totalAssets,
         totalLiabilities: data.totalLiabilities,
@@ -108,11 +120,12 @@ class Main extends React.Component {
           <div>
             <h3>Select Currency: </h3>
           </div>
-          <div>
+          <CurrencySelector currencies={this.state.currencies} selectedCurrency={this.state.currencyCode} onCurrencyChange={this.selectCurrency}></CurrencySelector>
+          {/* <div>
             <select onChange={this.selectCurrency} value={this.state.currencyCode}>
               {this.state.currencies.map((currency) => <option key={currency.currencyCode} value={currency.currencyCode}>{currency.currencyCode}</option>)}
             </select>
-          </div>
+          </div> */}
         </div>
         <div className='row'>
           <h3>Net Worth</h3>
@@ -134,7 +147,7 @@ class Main extends React.Component {
               <th colSpan='2'>Long Term Assets</th><td className='line-item-amount'></td>
             </tr>
             {this.state.assets && this.state.assets.filter(value => value.category === 2).map((asset, index) =>
-              <AssetRow lineItem={asset.lineItem} currencySymbol={this.state.currencySymbol} amount={asset.amount} onAssetChange={this.handleAssetChange} index={index + 9}></AssetRow>)}
+              <AssetRow lineItem={asset.lineItem} currencySymbol={this.state.currencySymbol} amount={asset.amount} onAssetChange={this.handleAssetChange} index={index + this.state.assets.filter(value => value.category === 1).length}></AssetRow>)}
             <tr className='header-row'>
               <th colSpan='2'>Total Assets</th>
               <td>

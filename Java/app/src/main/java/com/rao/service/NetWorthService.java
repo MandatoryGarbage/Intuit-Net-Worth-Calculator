@@ -60,21 +60,23 @@ public class NetWorthService {
         double netWorth = 0.00;
         ArrayList<DisplayAsset> displayAssets = new ArrayList<>();
         for (Asset asset : assets) {
-            DisplayAsset displayAsset = new DisplayAsset(asset.getCategory(), asset.getLineItem(), decimalFormat.format(asset.getAmount()));
+            DisplayAsset displayAsset = new DisplayAsset(asset.getCategory(), asset.getLineItem(),
+                    decimalFormat.format(asset.getAmount()));
             displayAssets.add(displayAsset);
             totalAssets += asset.getAmount();
         }
         totalAssets = new BigDecimal(totalAssets).setScale(2, RoundingMode.FLOOR).doubleValue();
         ArrayList<DisplayLiability> displayLiabilities = new ArrayList<>();
         for (Liability liability : liabilities) {
-            DisplayLiability displayLiability = new DisplayLiability(liability.getCategory(), liability.getLineItem(), decimalFormat.format(liability.getMonthlyPayment()), decimalFormat.format(liability.getAmount()));
+            DisplayLiability displayLiability = new DisplayLiability(liability.getCategory(), liability.getLineItem(),
+                    decimalFormat.format(liability.getMonthlyPayment()), decimalFormat.format(liability.getAmount()));
             displayLiabilities.add(displayLiability);
             totalLiabilities += liability.getAmount();
         }
         totalLiabilities = new BigDecimal(totalLiabilities).setScale(2, RoundingMode.FLOOR).doubleValue();
         netWorth = new BigDecimal(totalAssets - totalLiabilities).setScale(2, RoundingMode.FLOOR).doubleValue();
-        return new DisplayNetWorth(decimalFormat.format(netWorth), currency, displayAssets, displayLiabilities, decimalFormat.format(totalAssets),
-                decimalFormat.format(totalLiabilities));
+        return new DisplayNetWorth(decimalFormat.format(netWorth), currency, displayAssets, displayLiabilities,
+                decimalFormat.format(totalAssets), decimalFormat.format(totalLiabilities));
     }
 
     public DisplayNetWorth convertCurrency(ArrayList<Asset> assets, ArrayList<Liability> liabilities,

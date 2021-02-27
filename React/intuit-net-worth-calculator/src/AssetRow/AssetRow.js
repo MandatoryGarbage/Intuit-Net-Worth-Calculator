@@ -8,7 +8,11 @@ class AssetRow extends React.Component {
     }
 
     handleChange(event) {
-        this.props.onAssetChange(event.target.value, this.props.index);
+        if (isNaN(event.target.value)) {
+            window.alert('You have entered a value that is not a number');
+        } else {
+            this.props.onAssetChange(event.target.value, this.props.index);
+        }
     }
 
     render() {
@@ -19,7 +23,7 @@ class AssetRow extends React.Component {
                     <div className='row'>
                     <div>{this.props.currencySymbol}</div>
                     <div className='fill-remaining-space'></div>
-                    <input value={this.props.amount} name={this.props.lineItem} onChange={this.handleChange}></input>
+                    <input value={this.props.amount} name={this.props.lineItem} onChange={this.handleChange} pattern='[0-9.]{1,}'></input>
                     </div>
                 </td>
             </tr>

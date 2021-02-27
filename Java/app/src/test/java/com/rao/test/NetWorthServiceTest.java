@@ -77,9 +77,9 @@ public class NetWorthServiceTest {
         CurrencyService currencyService = new CurrencyService();
         double exchangeRate = currencyService.getExchangeRate(originalCurrencyCode, convertCurrencyCode);
         DisplayNetWorth convertedNetWorth = netWorthService.convertCurrency(assets, liabilities, originalCurrencyCode, convertCurrencyCode);
-        String convertedTotalAssets = decimalFormat.format(new BigDecimal(900 * exchangeRate).setScale(2, RoundingMode.FLOOR).doubleValue());
-        String convertedTotalLiabilities = decimalFormat.format(new BigDecimal(400 * exchangeRate).setScale(2, RoundingMode.FLOOR).doubleValue());
-        String convertedNetWorthTotal = decimalFormat.format(new BigDecimal(500 * exchangeRate).setScale(2, RoundingMode.FLOOR).doubleValue());
+        String convertedTotalAssets = decimalFormat.format(new BigDecimal(900.00 * exchangeRate).setScale(2, RoundingMode.FLOOR).doubleValue());
+        String convertedTotalLiabilities = decimalFormat.format(new BigDecimal(400.00 * exchangeRate).setScale(2, RoundingMode.FLOOR).doubleValue());
+        String convertedNetWorthTotal = decimalFormat.format(new BigDecimal(500.00 * exchangeRate).setScale(2, RoundingMode.FLOOR).doubleValue());
         assertEquals(convertedNetWorth.getTotalAssets(), convertedTotalAssets);
         assertEquals(convertedNetWorth.getTotalLiabilities(), convertedTotalLiabilities);
         assertEquals(convertedNetWorth.getNetWorth(), convertedNetWorthTotal);
